@@ -22,13 +22,10 @@ EOP_tree <- function(S0=50,r=0.05,K=52,Time=2,dt=1,sigma=0.3, call=1, EU=1){
   n <- Time/dt+1
   p <- (exp(r*dt)-d)/(u-d)
   
-  u <- 1.2
-  d <- 0.8
-  p <- (exp(r*dt)-d)/(u-d)
-  
   #tree <- matrix(rep(0,625), nrow = 25)
   #first_line <- c(1, cumprod(c(rep(u,24))))
   #work_tree <- 
+  
   graph <- (Graf(u,d,n) * S0 - K)*(-1)^(call + 1)
   graph[graph < 0] <- 0
   

@@ -29,22 +29,20 @@ EOP_tree <- function(S0=50,r=0.05,K=52,Time=2,dt=1,sigma=0.3, call=1, EU=1){
   graph <- (Graf(u,d,n) * S0 - K)*(-1)^(call + 1)
   graph[graph < 0] <- 0
   
-  Cofanie <- matrix(0,Time/dt+1,Time/dt+1)
-  Cofanie[,Time/dt+1] <- graph[,Time/dt+1]
+  Cofanie <- matrix(0,n,n)
+  Cofanie[,n] <- graph[,n]
   
   if (EU == 1) {
-    for(j in (Time/dt+1):2){
-      for(k in 1:j-1){
+    for(j in n:2){
+      for(k in 1:(j-1)){
         Cofanie[k,j-1] <- Vertex_Value(p,r,dt,Cofanie[k,j],Cofanie[k+1,j])
       }
     }
   }
   else {
-    for(j in (Time/dt+1):2){
-      for(k in 1:j-1){
+    for(j in n:2){
+      for(k in 1:(j-1)){
         Cofanie[k,j-1] <- max(Vertex_Value(p,r,dt,Cofanie[k,j],Cofanie[k+1,j]), graph[k,j-1])
-        #print(Vertex_Value(p,r,dt,Cofanie[k,j],Cofanie[k+1,j]))
-        #print(graph[k,j-1])
       }
     }
   }
@@ -54,6 +52,43 @@ EOP_tree <- function(S0=50,r=0.05,K=52,Time=2,dt=1,sigma=0.3, call=1, EU=1){
 }
 
 EOP_tree(call=0, EU=0)
+
+#Opłacalność wykonania opcji amerykańskiej
+Worth_American <- function(S0=50,r=0.05,K=52,Time=2,dt=1,sigma=0.3, call=1){
+
+  u <- exp(sigma*sqrt(dt))
+  d <- exp(-sigma*sqrt(dt))
+  n <- Time/dt+1
+  p <- (exp(r*dt)-d)/(u-d)
+  
+  graph <- (Graf(u,d,n) * S0 - K)*(-1)^(call + 1)
+  graph[graph < 0] <- 0
+  
+  Cofanie <- matrix(0,n,n)
+  Cofanie[,n] <- graph[,n]
+  
+  Worth <- matrix(0,n,n)
+  Worth[,n] <- (graph[,n]>0)
+  
+  #wiemy że opcję call opłaca sie wykonać tylko na końcu
+  #Dlatego wystarczy spojrzeć na kolumne ostatnich momentów
+  if(call == 1){
+    return(Worth)
+  }
+  
+  for(j in n:2){
+    for(k in 1:(j-1)){
+      v1 <- Vertex_Value(p,r,dt,Cofanie[k,j],Cofanie[k+1,j])
+      v2 <- graph[k,j-1]
+      Cofanie[k,j-1] <- max(v1,v2)
+      if(v2>=v1){
+        Worth[k,j-1] <- 1
+      }
+    }
+  }
+  
+  return(Worth)
+}
 
 ###################### Testy wrażliwości:
 

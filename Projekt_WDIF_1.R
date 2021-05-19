@@ -90,6 +90,70 @@ Worth_American <- function(S0=50,r=0.05,K=52,Time=2,dt=1,sigma=0.3, call=1){
   return(Worth)
 }
 
+
+delta_akcji <- function(Vb, Vc, Stb, Stc) {
+  return((Vb - Vc)/(Stb - Stc))
+}
+
+alpha_gotowki <- function(delta_akcji, Stc, r, dt) {
+  return(-delta_akcji * Stc * exp(-r * dt))
+}
+
+
+portfel <- function(S0=20, u=1.1, d=0.9, dt=3/12, Time=1/2, K=21, call=1, r=0.12, EU=1, call=1) {
+  
+  #u <- exp(sigma*sqrt(dt))
+  #d <- exp(-sigma*sqrt(dt))
+  n <- Time/dt+1
+  p <- (exp(r*dt)-d)/(u-d)
+  
+  macierz <- matrix(0,Time/dt+1,Time/dt+1)
+  macierz[1,1] <- S0
+  for (i in 2:(Time/dt+1)) {
+    macierz[i,i] <- macierz[i-1,i-1]*d
+  } 
+  
+  for(j in 1:(Time/dt)) {
+    for(k in j:(Time/dt)) {
+      macierz[j,k+1] <- macierz[j,k]*u
+    }
+  }
+  
+  graph <- (Graf(u=1.1, d=0.9, n=3) * S0 - K)*(-1)^(call + 1)
+  graph[graph < 0] <- 0
+  
+  Cofanie <- matrix(0,Time/dt+1,Time/dt+1)
+  Cofanie[,Time/dt+1] <- graph[,Time/dt+1]
+  
+  if (EU == 1) {
+    for(j in (Time/dt+1):2){
+      for(k in 1:(j-1)){
+        Cofanie[k,j-1] <- Vertex_Value(p,r,dt,Cofanie[k,j],Cofanie[k+1,j])
+      }
+    }
+  }
+  else {
+    for(j in (Time/dt+1):2){
+      for(k in 1:(j-1)){
+        Cofanie[k,j-1] <- max(Vertex_Value(p,r,dt,Cofanie[k,j],Cofanie[k+1,j]), graph[k,j-1])
+      }
+    }
+  }
+  
+  z <- complex(0,0)
+  M <- matrix(z, Time/dt+1, Time/dt+1)
+  
+  for (i in 1:(Time/dt)){
+    for (j in i:(Time/dt)){
+      M[i,j] <- complex(1, delta_akcji(Cofanie[i,j+1], Cofanie[i+1,j+1], macierz[i,j+1], macierz[i+1,j+1]), alpha_gotowki(delta_akcji(Cofanie[i,j+1], Cofanie[i+1,j+1], macierz[i,j+1], macierz[i+1,j+1]), macierz[i+1,j+1], r, dt))
+    }
+  }
+  
+  
+  return(M)
+}
+portfel()
+
 ###################### Testy wrażliwości:
 
 #test dla K

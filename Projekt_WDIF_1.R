@@ -90,6 +90,7 @@ Worth_American <- function(S0=50,r=0.05,K=52,Time=2,dt=1,sigma=0.3, call=1){
   return(Worth)
 }
 
+###### Delta i alpha
 
 delta_akcji <- function(Vb, Vc, Stb, Stc) {
   return((Vb - Vc)/(Stb - Stc))

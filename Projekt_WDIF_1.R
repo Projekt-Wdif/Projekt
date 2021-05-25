@@ -1,9 +1,7 @@
-Graf <- function(u,d,n=25){
+Graf<- function(u,d,n=25){
   A<-matrix(0,n,n)
   for(i in 1:n){
-    for(j in i:n){
-      A[i,j]<-u^(j-i)*d^(i-1)
-    }
+    A[1:i,i]<-u^(seq(i,-i+2,-2)-1)
   }
   return(A)
 }

@@ -372,11 +372,10 @@ par(xpd = TRUE)
 
 legend(0.0006,9.1, c("EU/AM call", "EU put", "AM put"), pch = c(1,2,4), col = c(3,2,4), lty = 1, bg = "white", pt.bg = "white", cex = 1, lwd = 2)
 
-grid <- matrix(c(1,2,3,4) , ncol=2, nrow=2, byrow = T)
+grid <- matrix(c(1,1,2,3) , ncol=2, nrow=2, byrow = T)
 layout(grid)
 
-plot(vector_dt, values_dt_eu_call, type='l', xlab=expression(paste(Delta, 't (skala logarytmiczna)')), ylab='Cena', main=expression(paste('Cena EU call w zaleznosci od ', Delta, 't')), log = "x")
-plot(vector_dt, values_dt_eu_put, type='l', xlab=expression(paste(Delta, 't (skala logarytmiczna)')), ylab='Cena', main=expression(paste('Cena EU put w zaleznosci od ', Delta, 't')), log = "x")
-plot(vector_dt, values_dt_usa_call, type='l', xlab=expression(paste(Delta, 't (skala logarytmiczna)')), ylab='Cena', main=expression(paste('Cena AM call w zaleznosci od ', Delta, 't')), log = "x")
-plot(vector_dt, values_dt_usa_put, type = "l", xlab=expression(paste(Delta, 't (skala logarytmiczna)')), ylab='Cena', main=expression(paste('Cena AM put w zaleznosci od ', Delta, 't')), log = "x")
+plot(vector_dt, values_dt_eu_call, xlab=expression(paste(Delta, 't (skala logarytmiczna)')), ylab='Cena',type = "o", col = 3, pch = 1, lty = 1, lwd = 2, cex = 1, main=expression(paste('Cena EU/AM call w zaleznosci od ', Delta, 't')), log = "x")
+plot(vector_dt, values_dt_eu_put, type = "o", col = 2, pch = 2, lty = 1, lwd = 2, cex = 1, xlab=expression(paste(Delta, 't (skala logarytmiczna)')), ylab='Cena', main=expression(paste('Cena EU put w zaleznosci od ', Delta, 't')), log = "x")
+plot(vector_dt, values_dt_usa_put, type = "o", col = 4, pch = 4, lty = 1, lwd = 2, cex = 1, xlab=expression(paste(Delta, 't (skala logarytmiczna)')), ylab='Cena', main=expression(paste('Cena AM put w zaleznosci od ', Delta, 't')), log = "x")
 

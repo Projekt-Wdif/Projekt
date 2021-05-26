@@ -79,7 +79,7 @@ Worth_American <- function(S0=50,r=0.05,K=52,Time=2,dt=1,sigma=0.3, call=1){
       v1 <- Vertex_Value(p,r,dt,Cofanie[k,j],Cofanie[k+1,j])
       v2 <- graph[k,j-1]
       Cofanie[k,j-1] <- max(v1,v2)
-      if(v2>=v1){
+      if(v2>v1){
         Worth[k,j-1] <- 1
       }
     }

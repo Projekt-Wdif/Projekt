@@ -164,10 +164,27 @@ values_K_eu_put <- sapply(vector_K, EOP_tree, S0=50,r=0.05,dt=1/12,Time=2,sigma=
 values_K_usa_call <- sapply(vector_K, EOP_tree, S0=50,r=0.05,dt=1/12,Time=2,sigma=0.3, call=1, EU=0)
 values_K_usa_put <- sapply(vector_K, EOP_tree, S0=50,r=0.05,dt=1/12,Time=2,sigma=0.3, call=0, EU=0)
 
-plot(vector_K, values_K_eu_call, type='l', xlab='K', ylab='Cena', main='Cena opcji europejskiej call')
-plot(vector_K, values_K_eu_put, type='l', xlab='K', ylab='Cena', main='Cena opcji europejskiej put')
-plot(vector_K, values_K_usa_call, type='l', xlab='K', ylab='Cena', main='Cena opcji amerykańskiej call')
-plot(vector_K, values_K_usa_put, type='l', xlab='K', ylab='Cena', main='Cena opcji amerykańskiej put')
+# grid <- matrix(c(1,2,3,4) , ncol=2, nrow=2, byrow = T)
+# layout(grid)
+# 
+# plot(vector_K, values_K_eu_call, type='l', xlab='K', ylab='Cena', main='Cena opcji europejskiej call')
+# plot(vector_K, values_K_eu_put, type='l', xlab='K', ylab='Cena', main='Cena opcji europejskiej put')
+# plot(vector_K, values_K_usa_call, type='l', xlab='K', ylab='Cena', main='Cena opcji amerykanskiej call')
+# plot(vector_K, values_K_usa_put, type='l', xlab='K', ylab='Cena', main='Cena opcji amerykanskiej put')
+# 
+# grid <- matrix(c(1,2,3,4) , ncol=2, nrow=2, byrow = T)
+# layout(grid)
+
+plot(vector_K, values_K_eu_call, type = "o", col = 3, pch = 1, lty = 1, lwd = 2, cex = 1, xlab='K', ylab='Cena', main='Cena opcji w zaleznosci od ceny wykonania K', ylim = c(0,17))
+lines(vector_K, values_K_eu_put, type = "o", col = 2, pch = 2, lty = 1, lwd = 2, cex = 1)
+lines(vector_K, values_K_usa_put, type = "o", col = 4, pch = 4, lty = 1, lwd = 2, cex = 1)
+
+par(xpd = TRUE)
+
+legend(39.8,11, c("EU/AM call", "EU put", "AM put"), pch = c(1,2,4), col = c(3,2,4), lty = 1, bg = "white", pt.bg = "white", cex = 1, lwd = 2)
+
+
+
 
 #test dla T
 
@@ -178,10 +195,23 @@ values_T_eu_put <- sapply(vector_T, EOP_tree, S0=50,r=0.05,dt=1/12,K=48,sigma=0.
 values_T_usa_call <- sapply(vector_T, EOP_tree, S0=50,r=0.05,dt=1/12,K=48,sigma=0.3, call=1, EU=0)
 values_T_usa_put <- sapply(vector_T, EOP_tree, S0=50,r=0.05,dt=1/12,K=48,sigma=0.3, call=0, EU=0)
 
-plot(vector_T, values_T_eu_call, type='l', xlab='T', ylab='Cena', main='Cena opcji europejskiej call')
-plot(vector_T, values_T_eu_put, type='l', xlab='T', ylab='Cena', main='Cena opcji europejskiej put')
-plot(vector_T, values_T_usa_call, type='l', xlab='T', ylab='Cena', main='Cena opcji amerykańskiej call')
-plot(vector_T, values_T_usa_put, type='l', xlab='T', ylab='Cena', main='Cena opcji amerykańskiej put')
+# plot(vector_T, values_T_eu_call, type='l', xlab='T', ylab='Cena', main='Cena opcji europejskiej call')
+# plot(vector_T, values_T_eu_put, type='l', xlab='T', ylab='Cena', main='Cena opcji europejskiej put')
+# plot(vector_T, values_T_usa_call, type='l', xlab='T', ylab='Cena', main='Cena opcji amerykanskiej call')
+# plot(vector_T, values_T_usa_put, type='l', xlab='T', ylab='Cena', main='Cena opcji amerykanskiej put')
+# 
+# grid <- matrix(c(1,2,3,4) , ncol=2, nrow=2, byrow = T)
+# layout(grid)
+
+plot(vector_T, values_T_eu_call, type = "o", col = 3, pch = 1, lty = 1, lwd = 2, cex = 1, xlab='T', ylab='Cena', main='Cena opcji w zaleznosci od zapadalnosci T', ylim = c(0,20))
+lines(vector_T, values_T_eu_put, type = "o", col = 2, pch = 2, lty = 1, lwd = 2, cex = 1)
+lines(vector_T, values_T_usa_put, type = "o", col = 4, pch = 4, lty = 1, lwd = 2, cex = 1)
+
+par(xpd = TRUE)
+
+legend(0.4,20, c("EU/AM call", "EU put", "AM put"), pch = c(1,2,4), col = c(3,2,4), lty = 1, bg = "white", pt.bg = "white", cex = 1, lwd = 2)
+
+
 
 #test dla S0
 
@@ -192,10 +222,23 @@ values_S0_eu_put <- sapply(vector_S0, EOP_tree, Time=2,r=0.05,dt=1/12,K=48,sigma
 values_S0_usa_call <- sapply(vector_S0, EOP_tree, Time=2,r=0.05,dt=1/12,K=48,sigma=0.3, call=1, EU=0)
 values_S0_usa_put <- sapply(vector_S0, EOP_tree, Time=2,r=0.05,dt=1/12,K=48,sigma=0.3, call=0, EU=0)
 
-plot(vector_S0, values_S0_eu_call, type='l', xlab=expression('S'['0']), ylab='Cena', main='Cena opcji europejskiej call')
-plot(vector_S0, values_S0_eu_put, type='l', xlab=expression('S'['0']), ylab='Cena', main='Cena opcji europejskiej put')
-plot(vector_S0, values_S0_usa_call, type='l', xlab=expression('S'['0']), ylab='Cena', main='Cena opcji amerykańskiej call')
-plot(vector_S0, values_S0_usa_put, type='l', xlab=expression('S'['0']), ylab='Cena', main='Cena opcji amerykańskiej put')
+# plot(vector_S0, values_S0_eu_call, type='l', xlab=expression('S'['0']), ylab='Cena', main='Cena opcji europejskiej call')
+# plot(vector_S0, values_S0_eu_put, type='l', xlab=expression('S'['0']), ylab='Cena', main='Cena opcji europejskiej put')
+# plot(vector_S0, values_S0_usa_call, type='l', xlab=expression('S'['0']), ylab='Cena', main='Cena opcji amerykanskiej call')
+# plot(vector_S0, values_S0_usa_put, type='l', xlab=expression('S'['0']), ylab='Cena', main='Cena opcji amerykanskiej put')
+# 
+# grid <- matrix(c(1,2,3,4) , ncol=2, nrow=2, byrow = T)
+# layout(grid)
+
+plot(vector_S0, values_S0_eu_call, type = "o", col = 3, pch = 1, lty = 1, lwd = 2, cex = 1, xlab='spot', ylab='Cena', main='Cena opcji w zaleznosci od poczatkowej ceny spot', ylim = c(0,20))
+lines(vector_S0, values_S0_eu_put, type = "o", col = 2, pch = 2, lty = 1, lwd = 2, cex = 1)
+lines(vector_S0, values_S0_usa_put, type = "o", col = 4, pch = 4, lty = 1, lwd = 2, cex = 1)
+
+par(xpd = TRUE)
+
+legend(39.5,20, c("EU/AM call", "EU put", "AM put"), pch = c(1,2,4), col = c(3,2,4), lty = 1, bg = "white", pt.bg = "white", cex = 1, lwd = 2)
+
+
 
 #test dla sigma
 
@@ -206,10 +249,24 @@ values_sigma_eu_put <- sapply(vector_sigma, EOP_tree, S0=50,r=0.05,dt=1/12,K=48,
 values_sigma_usa_call <- sapply(vector_sigma, EOP_tree, S0=50,r=0.05,dt=1/12,K=48,Time=2, call=1, EU=0)
 values_sigma_usa_put <- sapply(vector_sigma, EOP_tree, S0=50,r=0.05,dt=1/12,K=48,Time=2, call=0, EU=0)
 
-plot(vector_sigma, values_sigma_eu_call, type='l', xlab=expression(sigma), ylab='Cena', main='Cena opcji europejskiej call')
-plot(vector_sigma, values_sigma_eu_put, type='l', xlab=expression(sigma), ylab='Cena', main='Cena opcji europejskiej put')
-plot(vector_sigma, values_sigma_usa_call, type='l', xlab=expression(sigma), ylab='Cena', main='Cena opcji amerykańskiej call')
-plot(vector_sigma, values_sigma_usa_put, type='l', xlab=expression(sigma), ylab='Cena', main='Cena opcji amerykańskiej put')
+# plot(vector_sigma, values_sigma_eu_call, type='l', xlab=expression(sigma), ylab='Cena', main='Cena opcji europejskiej call')
+# plot(vector_sigma, values_sigma_eu_put, type='l', xlab=expression(sigma), ylab='Cena', main='Cena opcji europejskiej put')
+# plot(vector_sigma, values_sigma_usa_call, type='l', xlab=expression(sigma), ylab='Cena', main='Cena opcji amerykanskiej call')
+# plot(vector_sigma, values_sigma_usa_put, type='l', xlab=expression(sigma), ylab='Cena', main='Cena opcji amerykanskiej put')
+# 
+# grid <- matrix(c(1,2,3,4) , ncol=2, nrow=2, byrow = T)
+# layout(grid)
+
+plot(vector_sigma, values_sigma_eu_call, type = "o", col = 3, pch = 1, lty = 1, lwd = 2, cex = 1, xlab=expression(paste(sigma)), ylab='Cena', main=expression(paste('Cena opcji w zaleznosci od parametru ', sigma)), ylim = c(0,50))
+lines(vector_sigma, values_sigma_eu_put, type = "o", col = 2, pch = 2, lty = 1, lwd = 2, cex = 1)
+lines(vector_sigma, values_sigma_usa_put, type = "o", col = 4, pch = 4, lty = 1, lwd = 2, cex = 1)
+
+par(xpd = TRUE)
+
+legend(0.1,50, c("EU/AM call", "EU put", "AM put"), pch = c(1,2,4), col = c(3,2,4), lty = 1, bg = "white", pt.bg = "white", cex = 1, lwd = 2)
+
+
+
 
 #test dla r
 
@@ -220,22 +277,49 @@ values_r_eu_put <- sapply(vector_r, EOP_tree, S0=50,Time=2,dt=1/12,K=48,sigma=0.
 values_r_usa_call <- sapply(vector_r, EOP_tree, S0=50,Time=2.05,dt=1/12,K=48,sigma=0.3, call=1, EU=0)
 values_r_usa_put <- sapply(vector_r, EOP_tree, S0=50,Time=2,dt=1/12,K=48,sigma=0.3, call=0, EU=0)
 
-plot(vector_r, values_r_eu_call, type='l', xlab='r', ylab='Cena', main='Cena opcji europejskiej call')
-plot(vector_r, values_r_eu_put, type='l', xlab='r', ylab='Cena', main='Cena opcji europejskiej put')
-plot(vector_r, values_r_usa_call, type='l', xlab='r', ylab='Cena', main='Cena opcji amerykańskiej call')
-plot(vector_r, values_r_usa_put, type='l', xlab='r', ylab='Cena', main='Cena opcji amerykańskiej put')
+# plot(vector_r, values_r_eu_call, type='l', xlab='r', ylab='Cena', main='Cena opcji europejskiej call')
+# plot(vector_r, values_r_eu_put, type='l', xlab='r', ylab='Cena', main='Cena opcji europejskiej put')
+# plot(vector_r, values_r_usa_call, type='l', xlab='r', ylab='Cena', main='Cena opcji amerykanskiej call')
+# plot(vector_r, values_r_usa_put, type='l', xlab='r', ylab='Cena', main='Cena opcji amerykanskiej put')
+# 
+# grid <- matrix(c(1,2,3,4) , ncol=2, nrow=2, byrow = T)
+# layout(grid)
+
+plot(vector_r, values_r_eu_call, type = "o", col = 3, pch = 1, lty = 1, lwd = 2, cex = 1, xlab='r', ylab='Cena', main='Cena opcji w zaleznosci od stopy wolnej od ryzyka r', ylim = c(0,22))
+lines(vector_r, values_r_eu_put, type = "o", col = 2, pch = 2, lty = 1, lwd = 2, cex = 1)
+lines(vector_r, values_r_usa_put, type = "o", col = 4, pch = 4, lty = 1, lwd = 2, cex = 1)
+
+par(xpd = TRUE)
+
+legend(0.005,22, c("EU/AM call", "EU put", "AM put"), pch = c(1,2,4), col = c(3,2,4), lty = 1, bg = "white", pt.bg = "white", cex = 1, lwd = 2)
+
+
+
 
 #test dla dt
 
-vector_dt <- seq(0.05, 1, 0.05)
+vector_dt <- c(1/1460,1/730,1/365,1/200,1/168,1/144,1/120,1/96,1/72,1/60,1/48,1/32,1/24,1/16,1/12,1/8,1/6,1/4,1/2,1)
 
 values_dt_eu_call <- sapply(vector_dt, EOP_tree, S0=50,r=0.05,K=52,Time=2,sigma=0.3, call=1, EU=1)
 values_dt_eu_put <- sapply(vector_dt, EOP_tree, S0=50,r=0.05,K=52,Time=2,sigma=0.3, call=0, EU=1)
 values_dt_usa_call <- sapply(vector_dt, EOP_tree, S0=50,r=0.05,K=52,Time=2,sigma=0.3, call=1, EU=0)
 values_dt_usa_put <- sapply(vector_dt, EOP_tree, S0=50,r=0.05,K=52,Time=2,sigma=0.3, call=0, EU=0)
 
-plot(vector_dt, values_dt_eu_call, type='l', xlab='dt', ylab='Cena', main='Cena opcji europejskiej call')
-plot(vector_dt, values_dt_eu_put, type='l', xlab='dt', ylab='Cena', main='Cena opcji europejskiej put')
-plot(vector_dt, values_dt_usa_call, type='l', xlab='dt', ylab='Cena', main='Cena opcji amerykańskiej call')
-plot(vector_dt, values_dt_usa_put, type='l', xlab='dt', ylab='Cena', main='Cena opcji amerykańskiej put')
+
+
+plot(vector_dt, values_dt_eu_call, type = "o", col = 3, pch = 1, lty = 1, lwd = 2, cex = 1, xlab=expression(paste(Delta, 't (skala logarytmiczna)')), ylab='Cena', main=expression(paste('Cena opcji w zaleznosci od ', Delta, 't')), ylim = c(6,10.1), log = "x")
+lines(vector_dt, values_dt_eu_put, type = "o", col = 2, pch = 2, lty = 1, lwd = 2, cex = 1)
+lines(vector_dt, values_dt_usa_put, type = "o", col = 4, pch = 4, lty = 1, lwd = 2, cex = 1)
+
+par(xpd = TRUE)
+
+legend(0.0006,9.1, c("EU/AM call", "EU put", "AM put"), pch = c(1,2,4), col = c(3,2,4), lty = 1, bg = "white", pt.bg = "white", cex = 1, lwd = 2)
+
+grid <- matrix(c(1,2,3,4) , ncol=2, nrow=2, byrow = T)
+layout(grid)
+
+plot(vector_dt, values_dt_eu_call, type='l', xlab=expression(paste(Delta, 't (skala logarytmiczna)')), ylab='Cena', main=expression(paste('Cena EU call w zaleznosci od ', Delta, 't')), log = "x")
+plot(vector_dt, values_dt_eu_put, type='l', xlab=expression(paste(Delta, 't (skala logarytmiczna)')), ylab='Cena', main=expression(paste('Cena EU put w zaleznosci od ', Delta, 't')), log = "x")
+plot(vector_dt, values_dt_usa_call, type='l', xlab=expression(paste(Delta, 't (skala logarytmiczna)')), ylab='Cena', main=expression(paste('Cena AM call w zaleznosci od ', Delta, 't')), log = "x")
+plot(vector_dt, values_dt_usa_put, type = "l", xlab=expression(paste(Delta, 't (skala logarytmiczna)')), ylab='Cena', main=expression(paste('Cena AM put w zaleznosci od ', Delta, 't')), log = "x")
 

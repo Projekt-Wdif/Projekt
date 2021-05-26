@@ -99,59 +99,116 @@ alpha_gotowki <- function(delta_akcji, Stc, r, dt) {
 }
 
 
-portfel <- function(S0=20, u=1.1, d=0.9, dt=3/12, Time=1/2, K=21, call=1, r=0.12, EU=1, call=1) {
+portfel <- function(S0=20, dt=3/12, Time=1/2, K=21, r=0.12, sigma=0.3, EU=1, call=1, akcje=1) {
   
-  #u <- exp(sigma*sqrt(dt))
-  #d <- exp(-sigma*sqrt(dt))
+  u <- exp(sigma*sqrt(dt))
+  d <- exp(-sigma*sqrt(dt))
+  #u = 1.1
+  #d = 0.9
   n <- Time/dt+1
   p <- (exp(r*dt)-d)/(u-d)
   
-  macierz <- matrix(0,Time/dt+1,Time/dt+1)
-  macierz[1,1] <- S0
-  for (i in 2:(Time/dt+1)) {
-    macierz[i,i] <- macierz[i-1,i-1]*d
-  } 
+  macierz <- Graf(u, d, n) * S0
   
-  for(j in 1:(Time/dt)) {
-    for(k in j:(Time/dt)) {
-      macierz[j,k+1] <- macierz[j,k]*u
-    }
-  }
-  
-  graph <- (Graf(u=1.1, d=0.9, n=3) * S0 - K)*(-1)^(call + 1)
+  graph <- (Graf(u, d, n) * S0 - K)*(-1)^(call + 1)
   graph[graph < 0] <- 0
   
   Cofanie <- matrix(0,Time/dt+1,Time/dt+1)
   Cofanie[,Time/dt+1] <- graph[,Time/dt+1]
   
+  M_akcje <- matrix(0, n, n)
+  M_gotowki <- matrix(0, n, n)
   if (EU == 1) {
-    for(j in (Time/dt+1):2){
+    for(j in n:2){
       for(k in 1:(j-1)){
         Cofanie[k,j-1] <- Vertex_Value(p,r,dt,Cofanie[k,j],Cofanie[k+1,j])
+        M_akcje[k,j-1] <- delta_akcji(Cofanie[k,j], Cofanie[k+1,j], macierz[k,j], macierz[k+1,j]) 
+        M_gotowki[k,j-1] <- alpha_gotowki(delta_akcji(Cofanie[k,j], Cofanie[k+1,j], macierz[k,j], macierz[k+1,j]), macierz[k+1,j], r, dt)
       }
     }
   }
   else {
-    for(j in (Time/dt+1):2){
+    for(j in n:2){
       for(k in 1:(j-1)){
         Cofanie[k,j-1] <- max(Vertex_Value(p,r,dt,Cofanie[k,j],Cofanie[k+1,j]), graph[k,j-1])
+        M_akcje[k,j-1] <- delta_akcji(Cofanie[k,j], Cofanie[k+1,j], macierz[k,j], macierz[k+1,j])
+        M_gotowki[k,j-1] <- alpha_gotowki(delta_akcji(Cofanie[k,j], Cofanie[k+1,j], macierz[k,j], macierz[k+1,j]), macierz[k+1,j], r, dt)
       }
     }
   }
-  
-  z <- complex(0,0)
-  M <- matrix(z, Time/dt+1, Time/dt+1)
-  
-  for (i in 1:(Time/dt)){
-    for (j in i:(Time/dt)){
-      M[i,j] <- complex(1, delta_akcji(Cofanie[i,j+1], Cofanie[i+1,j+1], macierz[i,j+1], macierz[i+1,j+1]), alpha_gotowki(delta_akcji(Cofanie[i,j+1], Cofanie[i+1,j+1], macierz[i,j+1], macierz[i+1,j+1]), macierz[i+1,j+1], r, dt))
+  if(akcje == 1){
+    return(M_akcje)
+  }
+  else {
+    return(M_gotowki)
+  }
+
+}
+akcje <- portfel(50, 1/12, 2, 48, 0.02, 0.3, 1, 1, 1)
+gotowka <- portfel(50, 1/12, 2, 48, 0.02, 0.3, 1, 1, 2)
+#akcje
+
+
+for (i in 1:sqrt(length(akcje))) {
+  for (j in 1:sqrt(length(akcje))) {
+    if(akcje[i,j] == 0) {
+      akcje[i,j] <- NA
     }
   }
-  
-  
-  return(M)
 }
-portfel()
+#akcje
+for (i in 1:sqrt(length(gotowka))) {
+  for (j in 1:sqrt(length(gotowka))) {
+    if(gotowka[i,j] == 0) {
+      gotowka[i,j] <- NA
+    }
+  }
+}
+#gotowka
+
+X <- melt(akcje, na.rm = TRUE)
+ggplot(X, aes(x = Var2, y = Var1)) + 
+  geom_point(aes(col=value), size=6) +
+  xlab("X") + ylab("Y")
+#X
+
+Y <- melt(gotowka, na.rm = TRUE)
+ggplot(Y, aes(x = Var2, y = Var1)) + 
+  geom_point(aes(col=value), size=6) +
+  xlab("X") + ylab("Y")
+
+akcje <- portfel(50, 1/12, 2, 48, 0.02, 0.3, 1, 0, 1)
+gotowka <- portfel(50, 1/12, 2, 48, 0.02, 0.3, 1, 0, 2)
+#akcje
+
+
+for (i in 1:sqrt(length(akcje))) {
+  for (j in 1:sqrt(length(akcje))) {
+    if(akcje[i,j] == 0) {
+      akcje[i,j] <- NA
+    }
+  }
+}
+#akcje
+for (i in 1:sqrt(length(gotowka))) {
+  for (j in 1:sqrt(length(gotowka))) {
+    if(gotowka[i,j] == 0) {
+      gotowka[i,j] <- NA
+    }
+  }
+}
+#gotowka
+
+X <- melt(akcje, na.rm = TRUE)
+ggplot(X, aes(x = Var2, y = Var1)) + 
+  geom_point(aes(col=value), size=6) +
+  xlab("X") + ylab("Y")
+#X
+
+Y <- melt(gotowka, na.rm = TRUE)
+ggplot(Y, aes(x = Var2, y = Var1)) + 
+  geom_point(aes(col=value), size=6) +
+  xlab("X") + ylab("Y")
 
 ###################### Testy wrażliwości:
 
